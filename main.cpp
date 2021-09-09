@@ -14,7 +14,7 @@ private:
   In_box next_y;
   Out_box xy_out;
   Menu color_menu;
-  Button menu_button;
+  Button color_button;
   Menu style_menu;
   Button style_button;
 
@@ -24,7 +24,7 @@ private:
   void hide_color_menu()
   {
     color_menu.hide();
-    menu_button.show();
+    color_button.show();
   }
 
   void hide_style_menu()
@@ -82,7 +82,7 @@ private:
 
   void menu_pressed()
   {
-    menu_button.hide();
+    color_button.hide();
     color_menu.show();
   }
 
@@ -104,7 +104,7 @@ Lines_window::Lines_window(Point xy, int w, int h, const string &title)
       next_y{Point{x_max() - 310, 0}, 50, 20, "next y:"},
       xy_out{Point{100, 0}, 100, 20, "current (x,y):"},
       color_menu{Point{x_max() - 70, 40}, 70, 20, Menu::vertical, "color"},
-      menu_button{Point{x_max() - 90, 30}, 90, 20, "color menu", cb_menu},
+      color_button{Point{x_max() - 90, 30}, 90, 20, "color menu", cb_menu},
       style_menu{Point{x_max() - 170, 40}, 70, 20, Menu::vertical, "style"},
       style_button{Point{x_max() - 190, 30}, 90, 20, "style menu", cb_style}
 {
@@ -119,7 +119,7 @@ Lines_window::Lines_window(Point xy, int w, int h, const string &title)
   color_menu.attach(new Button{Point{0, 0}, 0, 0, "black", cb_black});
   attach(color_menu);
   color_menu.hide();
-  attach(menu_button);
+  attach(color_button);
   style_menu.attach(new Button{Point{0, 0}, 0, 0, "dotted", cb_dotted});
   style_menu.attach(new Button{Point{0, 0}, 0, 0, "dashed", cb_dashed});
   style_menu.attach(new Button{Point{0, 0}, 0, 0, "solid", cb_solid});
@@ -151,9 +151,7 @@ int main()
 try
 {
   Point top_left{0, 0}; //will be top left corner of window
-
   Lines_window win{top_left, 800, 400, "lines"};
-
   return gui_main();
 }
 catch (const std::exception &e)
