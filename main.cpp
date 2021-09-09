@@ -15,13 +15,22 @@ private:
   Out_box xy_out;
   Menu color_menu;
   Button menu_button;
+  Menu style_menu;
+  Button style_button;
 
-  void change(Color c) { lines.set_color(c); }
+  void change_color(Color c) { lines.set_color(c); }
+  void change_style(Line_style ls) { lines.set_style(ls); }
 
-  void hide_menu()
+  void hide_color_menu()
   {
     color_menu.hide();
     menu_button.show();
+  }
+
+  void hide_style_menu()
+  {
+    style_menu.hide();
+    style_button.show();
   }
 
   static void cb_red(Address, Address pw) { reference_to<Lines_window>(pw).red_pressed(); }
@@ -30,29 +39,57 @@ private:
   static void cb_next(Address, Address pw) { reference_to<Lines_window>(pw).next(); }
   static void cb_quit(Address, Address pw) { reference_to<Lines_window>(pw).quit(); }
   static void cb_menu(Address, Address pw) { reference_to<Lines_window>(pw).menu_pressed(); }
+  static void cb_style(Address, Address pw) { reference_to<Lines_window>(pw).style_pressed(); }
+  static void cb_dotted(Address, Address pw) { reference_to<Lines_window>(pw).dotted_pressed(); }
+  static void cb_dashed(Address, Address pw) { reference_to<Lines_window>(pw).dashed_pressed(); }
+  static void cb_solid(Address, Address pw) { reference_to<Lines_window>(pw).solid_pressed(); }
 
   void red_pressed()
   {
-    change(Color::red);
-    hide_menu();
+    change_color(Color::red);
+    hide_color_menu();
   }
 
   void blue_pressed()
   {
-    change(Color::blue);
-    hide_menu();
+    change_color(Color::blue);
+    hide_color_menu();
   }
 
   void black_pressed()
   {
-    change(Color::black);
-    hide_menu();
+    change_color(Color::black);
+    hide_color_menu();
+  }
+
+  void dotted_pressed()
+  {
+    change_style(Line_style(Line_style::dot));
+    hide_style_menu();
+  }
+
+  void dashed_pressed()
+  {
+    change_style(Line_style(Line_style::dash));
+    hide_style_menu();
+  }
+
+  void solid_pressed()
+  {
+    change_style(Line_style(Line_style::solid));
+    hide_style_menu();
   }
 
   void menu_pressed()
   {
     menu_button.hide();
     color_menu.show();
+  }
+
+  void style_pressed()
+  {
+    style_button.hide();
+    style_menu.show();
   }
 
   void next();
@@ -67,7 +104,9 @@ Lines_window::Lines_window(Point xy, int w, int h, const string &title)
       next_y{Point{x_max() - 310, 0}, 50, 20, "next y:"},
       xy_out{Point{100, 0}, 100, 20, "current (x,y):"},
       color_menu{Point{x_max() - 70, 40}, 70, 20, Menu::vertical, "color"},
-      menu_button{Point{x_max() - 90, 30}, 90, 20, "color menu", cb_menu}
+      menu_button{Point{x_max() - 90, 30}, 90, 20, "color menu", cb_menu},
+      style_menu{Point{x_max() - 170, 40}, 70, 20, Menu::vertical, "style"},
+      style_button{Point{x_max() - 190, 30}, 90, 20, "style menu", cb_style}
 {
   attach(next_button);
   attach(quit_button);
@@ -81,6 +120,12 @@ Lines_window::Lines_window(Point xy, int w, int h, const string &title)
   attach(color_menu);
   color_menu.hide();
   attach(menu_button);
+  style_menu.attach(new Button{Point{0, 0}, 0, 0, "dotted", cb_dotted});
+  style_menu.attach(new Button{Point{0, 0}, 0, 0, "dashed", cb_dashed});
+  style_menu.attach(new Button{Point{0, 0}, 0, 0, "solid", cb_solid});
+  attach(style_menu);
+  style_menu.hide();
+  attach(style_button);
   attach(lines);
 }
 
