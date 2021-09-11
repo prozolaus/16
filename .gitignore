@@ -5,3 +5,5 @@
 *.json
 *.jpg
 *.gif
+Project*
+.vs
