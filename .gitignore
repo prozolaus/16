@@ -4,6 +4,7 @@
 *.html
 *.json
 *.jpg
+!vegetables.jpg
 *.gif
 Project*
 .vs
