@@ -194,6 +194,11 @@ struct Rectangle : Shape {
 
     int height() const { return h; }
     int width() const { return w; }
+    void change_params(int new_h, int new_w)
+    {
+        h = new_h;
+        w = new_w;
+    }
 private:
     int h;    // height
     int w;    // width
