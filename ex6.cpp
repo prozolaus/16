@@ -1,6 +1,5 @@
 #include "Simple_window.h"
 #include "Graph.h"
-#include <unistd.h>
 
 struct My_watch : Graph_lib::Window
 {
