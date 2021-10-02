@@ -183,6 +183,10 @@ struct Function : Shape {
 
 struct Line : Shape {            // a Line is a Shape defined by two Points
     Line(Point p1, Point p2);    // construct a line from two points
+    void change_point(int ii, Point pp)
+    {
+        set_point(ii,pp);
+    }
 };
 
 //------------------------------------------------------------------------------
