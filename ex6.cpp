@@ -46,6 +46,8 @@ private:
 	const double PI = 3.141592653589793238463;
 	double start_angle = 90;
 	int sec, min, hour, hour_ampm; //first initialization in function get_time_now()
+	const int minsec = 60, hrs = 12; //60 seconds = 1 minute and 60 minutes = 1 hour, 12 hours = 1 turn
+	const int minsec_angel_delta = 6, hrs_angel_delta = 30; //6 degrees = 1 sec(min), 30 degrees = 1 hour
 	Button quit_button;
 	vector<Point> sec_coords, min_coords, hour_coords, start_coords, notches_coords, hour_notches_coords;
 	void init();
@@ -56,7 +58,7 @@ private:
 	void quit() { Window::hide(); }
 };
 
-void My_watch::get_coords(vector<Point> &vp, double rad, int angel_delta, int n)
+void My_watch::get_coords(vector<Point> &vp, double rad, const int angel_delta, const int n)
 {
 	double angle = start_angle;
 	for (int i = 0, x, y; i < n; i++)
@@ -70,29 +72,23 @@ void My_watch::get_coords(vector<Point> &vp, double rad, int angel_delta, int n)
 
 void My_watch::init()
 {
-	//seconds
 	double k = 0.95 * radius;
-	get_coords(sec_coords, k, 6, 60);
+	get_coords(sec_coords, k, minsec_angel_delta, minsec);
 
-	//minutes
 	k = 0.9 * radius;
-	get_coords(min_coords, k, 6, 60);
+	get_coords(min_coords, k, minsec_angel_delta, minsec);
 
-	//hours
 	k = 0.5 * radius;
-	get_coords(hour_coords, k, 30, 12);
+	get_coords(hour_coords, k, hrs_angel_delta, hrs);
 
-	//start coords
 	k = radius;
-	get_coords(start_coords, k, 6, 60);
+	get_coords(start_coords, k, minsec_angel_delta, minsec);
 
-	//notches
 	k = 0.96 * radius;
-	get_coords(notches_coords, k, 6, 60);
+	get_coords(notches_coords, k, minsec_angel_delta, minsec);
 
-	//hour notches
 	k = 0.92 * radius;
-	get_coords(hour_notches_coords, k, 30, 12);
+	get_coords(hour_notches_coords, k, hrs_angel_delta, hrs);
 
 	init_notches();
 }
