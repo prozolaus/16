@@ -103,21 +103,6 @@ void Flex_Function::draw_lines() const
 constexpr int xmax = 700;
 constexpr int ymax = 700;
 
-constexpr int x_orig = xmax / 2;
-constexpr int y_orig = ymax / 2;
-constexpr Point orig{x_orig, y_orig};
-
-constexpr int r_min = -5;
-constexpr int r_max = 5;
-
-constexpr int xlength = xmax - 200;
-constexpr int ylength = ymax - 200;
-
-constexpr int n_points = xlength;
-
-constexpr int x_scale = xlength / (r_max - r_min);
-constexpr int y_scale = x_scale;
-
 const string sinus = "sin(x)",
              cosine = "cos(x)",
              exponent = "exp(x)",
@@ -132,18 +117,22 @@ double zero(double x) { return 0; }
 
 double square(double x) { return x * x; }
 
-double cube(double x) { return pow(x,3); }
+double cube(double x) { return pow(x, 3); }
 
 //------------------------------------------------------------------------------------
 
 struct My_window : Graph_lib::Window
 {
-  My_window(Point xy, int w, int h, const string &title)
+  My_window(Point xy, int w, int h, const string &title, int r1 = -5, int r2 = 5)
       : Window(xy, w, h, title),
+        r_min{r1},
+        r_max{r2},
+        xlength{w - 200},
+        ylength{h - 200},
         menu{Point{0, 0}, 70, 20, Menu::vertical, "functions"},
         inx1{Point{150, 0}, 50, 20, "x from:"},
         inx2{Point{250, 0}, 50, 20, "x to:"},
-        inxtext{Point{320,14},"from " + to_string(r_min) + " to " + to_string(r_max) + " by default"},
+        inxtext{Point{320, 14}, "from " + to_string(r_min) + " to " + to_string(r_max) + " by default"},
         quit_button{Point{x_max() - 70, 0}, 70, 20, "Quit", cb_quit}
   {
     attach(x);
@@ -165,13 +154,21 @@ struct My_window : Graph_lib::Window
     f.set_style(Line_style(Line_style::solid, 2));
     f.set_color(Color(Color::invisible));
     attach(menu);
-    attach(quit_button); 
+    attach(quit_button);
   }
 
 private:
+  const int r_min, r_max;
+  const int xlength, ylength;
+  const int n_points = xlength;
+  const int x_scale = xlength / (r_max - r_min);
+  const int y_scale = x_scale;
+  const int x_orig = xmax / 2;
+  const int y_orig = ymax / 2;
+  const Point orig{x_orig, y_orig};
   string xpix = to_string(x_scale), ypix = to_string(y_scale);
-  Axis x{Axis::x, Point{100, ymax / 2}, xlength, xlength / x_scale, "1=" + xpix + "px"};
-  Axis y{Axis::y, Point{xmax / 2, ymax - 100}, ylength, ylength / y_scale, "1=" + ypix + "px"};
+  Axis x{Axis::x, Point{100, y_orig}, xlength, xlength / x_scale, "1=" + xpix + "px"};
+  Axis y{Axis::y, Point{x_orig, ymax - 100}, ylength, ylength / y_scale, "1=" + ypix + "px"};
   Menu menu;
   In_box inx1, inx2;
   Text inxtext;
